@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/forgot/forgot.dart';
 import 'package:todo/home/homescreen.dart';
@@ -40,15 +41,14 @@ class _LoginState extends State<Login> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-               
                 Container(
                   padding: const EdgeInsets.all(10),
-                  // child: Text('hello'),
                   child: TextField(
                     controller: mailController,
-                    decoration:  InputDecoration(
-                      border:  OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32),),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(32),
+                      ),
                       labelText: 'Mail_ID',
                     ),
                   ),
@@ -58,43 +58,77 @@ class _LoginState extends State<Login> {
                   child: TextField(
                     obscureText: true,
                     controller: passwordController,
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32),),
+                        borderRadius: BorderRadius.circular(32),
+                      ),
                       labelText: 'Password',
                     ),
                   ),
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [],
-                ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const []),
                 TextButton(
                   style: TextButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 15),
                   ),
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => const Forget()),),);
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) => const Forget()),
+                      ),
+                    );
                   },
                   child: const Text('Forgot Password'),
                 ),
                 MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
                   textColor: Colors.white,
                   color: Colors.blue,
-                  child: const Text('Sign up'),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()));
+                  child: const Text('Login'),
+                  onPressed: () async {
+                    final auth = FirebaseAuth.instance;
+                    try {
+                      await auth.signInWithEmailAndPassword(
+                        email: mailController.text,
+                        password: passwordController.text,
+                      );
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()));
+                    } on FirebaseAuthException catch (e) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text('invalid email or password')));
+                      print(e.code);
+                      print('login failed');
+                    }
                   },
                 ),
+                SizedBox(height: 50),
                 Row(
-                  children: [ Divider(),
-                    const Padding( 
-                      padding: EdgeInsets.all(15),
-                       child: Text('OR'),), Divider(),
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10, right: 20),
+                        child: const Divider(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    const Text('OR'),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                        child: const Divider(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 Row(
@@ -114,6 +148,9 @@ class _LoginState extends State<Login> {
                 const Padding(
                   padding: EdgeInsets.all(15),
                 ),
+                const SizedBox(
+                  height: 150,
+                ),
                 Column(
                   children: [
                     Row(
@@ -126,9 +163,11 @@ class _LoginState extends State<Login> {
                           ),
                           onPressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Signup(),),);
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Signup(),
+                              ),
+                            );
                           },
                           child: const Text(
                             'Register',

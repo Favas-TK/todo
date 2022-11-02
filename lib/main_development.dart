@@ -1,10 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:todo/app/app.dart';
 import 'package:todo/bootstrap.dart';
 
-import 'package:todo/login/login.dart';
-
-
-
-void main() {
-  bootstrap(() => const App());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp();
+ bootstrap(() => const App());
 }
