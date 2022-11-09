@@ -98,6 +98,7 @@ class Signup extends StatelessWidget {
                     passwordController.text,
                     nameController.text,
                     mobileController.text,
+                    cPasswordController.text,
                     context,
                   );
                 },
@@ -128,6 +129,7 @@ class Signup extends StatelessWidget {
     String password,
     String username,
     String phonenumber,
+    String cpassword,
     BuildContext context,
   ) async {
     final auth = FirebaseAuth.instance;
@@ -137,13 +139,14 @@ class Signup extends StatelessWidget {
         email: email,
         password: password,
       );
-      await userRef.add({
+      await userRef.doc(auth.currentUser!.uid).set({
         'userid': auth.currentUser!.uid,
         'userName': username,
         'email': email,
         'password': password,
         'profileImage': '',
         'phonenumber': phonenumber,
+        'cpassword': cpassword,
       });
       unawaited(
         // ignore: use_build_context_synchronously
