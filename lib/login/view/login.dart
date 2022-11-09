@@ -33,6 +33,15 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
+                //  Container(
+                //   alignment: Alignment.center,
+                //   padding: const EdgeInsets.all(10),
+                //     child:const NetworkImage(
+                      
+                //            'https://cdni.iconscout.com/illustration/premium/thumb/job-starting-date-2537382-2146478.png',
+                
+                //    ),
+                // ),
                 Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),
@@ -45,14 +54,22 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.all(10),
                   child: TextField(
                     controller: mailController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32),
+                    decoration: const InputDecoration(
+                      enabledBorder: InputBorder.none,
+                        border:InputBorder.none,
+                        prefixIcon: Icon(Icons.email_outlined),
+                        hintText: 'Email',
+                        hintStyle: TextStyle(
+                         // color:  selected == Gender.Email ? enabledtxt : deaible,
+                        ),
                       ),
-                      labelText: 'Mail_ID',
-                    ),
-                  ),
-                ),
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(32),
+                //       ),
+                //       labelText: 'Mail_ID',
+                //     ),
+                   ),
+                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextField(
@@ -77,7 +94,7 @@ class _LoginState extends State<Login> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: ((context) => const Forget()),
+                        builder: (context) => const Forget(),
                       ),
                     );
                   },
@@ -85,7 +102,7 @@ class _LoginState extends State<Login> {
                 ),
                 MaterialButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(20),),
                   textColor: Colors.white,
                   color: Colors.blue,
                   child: const Text('Login'),
@@ -103,13 +120,13 @@ class _LoginState extends State<Login> {
                               builder: (context) => const HomeScreen()));
                     } on FirebaseAuthException catch (e) {
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('invalid email or password')));
-                      print(e.code);
-                      print('login failed');
+                          .showSnackBar(const SnackBar(content: Text('invalid email or password')));
+                      // print(e.code);
+                      // print('login failed');
                     }
                   },
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 Row(
                   children: [
                     Expanded(
@@ -123,7 +140,7 @@ class _LoginState extends State<Login> {
                     const Text('OR'),
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                        margin: const EdgeInsets.only(left: 20, right: 10),
                         child: const Divider(
                           color: Colors.black,
                         ),
@@ -165,7 +182,7 @@ class _LoginState extends State<Login> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Signup(),
+                                builder: (context) =>  Signup(),
                               ),
                             );
                           },

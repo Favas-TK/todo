@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo/app/app.dart';
@@ -7,5 +9,5 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   await Firebase.initializeApp();
- bootstrap(() => const App());
+  unawaited(bootstrap(() => const App()));
 }

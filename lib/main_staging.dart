@@ -6,10 +6,11 @@
 // https://opensource.org/licenses/MIT.
 
 
+import 'package:todo/app/app.dart';
 import 'package:todo/bootstrap.dart';
 
 import 'package:todo/signup/signup.dart';
 
 void main() {
-  bootstrap(() => const Signup());
+  bootstrap(() => const App());
 }
