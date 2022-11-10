@@ -13,86 +13,120 @@ class Signup extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController cPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: 1,
-        itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: [
-              const ListTile(
-                title: Text(
-                  'Register',
-                  style: TextStyle(
-                    fontSize: 50,
-                    color: Colors.blue,
-                  ),
-                ),
-                subtitle: Text(
-                  'please enter details to register',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.blue,
-                  ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            const ListTile(
+              title: Text(
+                'Register',
+                style: TextStyle(
+                  fontSize: 50,
+                  color: Colors.blue,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    hintText: 'Name',
-                  ),
+              subtitle: Text(
+                'please enter details to register',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: TextField(
-                  controller: mailController,
-                  decoration: const InputDecoration(
-                    labelText: 'enter your mail',
-                    hintText: 'mail',
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty ||
+                      !RegExp(r'^[A-Za-z][A-Za-z0-9_]{7,29}$')
+                          .hasMatch(value) ||
+                      value.length <= 4) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  hintText: 'Name',
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: TextField(
-                  controller: mobileController,
-                  decoration: const InputDecoration(
-                    labelText: 'mobile number',
-                    hintText: 'Mobile',
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == '') {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                controller: mailController,
+                decoration: const InputDecoration(
+                  labelText: 'enter your mail',
+                  hintText: 'mail',
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: TextField(
-                  controller: passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Password',
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == '') {
+                    return 'Please enter mobile number';
+                  }
+                  return null;
+                },
+                controller: mobileController,
+                decoration: const InputDecoration(
+                  labelText: 'mobile number',
+                  hintText: 'Mobile',
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: TextField(
-                  controller: cPasswordController,
-                  decoration: const InputDecoration(
-                    labelText: 'confirm password',
-                    hintText: 'confirm',
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                validator: (value) {
+                  if (value!.length < 6) {
+                    return 'Password should be more than 6 charrecters';
+                  }
+                  return null;
+                },
+                controller: passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Password',
                 ),
               ),
-              MaterialButton(
-                textColor: Colors.white,
-                color: Colors.blue,
-                child: const Text('Register'),
-                onPressed: () {
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                validator: (value) {
+                  if (passwordController != cPasswordController) {
+                    return 'password must be same';
+                  }
+                  return null;
+                },
+                controller: cPasswordController,
+                decoration: const InputDecoration(
+                  labelText: 'confirm password',
+                  hintText: 'confirm',
+                ),
+              ),
+            ),
+            MaterialButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: const Text('Register'),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
                   createuser(
                     mailController.text,
                     passwordController.text,
@@ -101,25 +135,30 @@ class Signup extends StatelessWidget {
                     cPasswordController.text,
                     context,
                   );
-                },
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Processing Data'),
+                  ),
+                );
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 15),
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 15),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Login(),
-                    ),
-                  );
-                },
-                child: const Text('already have an account? Login'),
-              ),
-            ],
-          );
-        },
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Login(),
+                  ),
+                );
+              },
+              child: const Text('already have an account? Login'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -149,7 +188,6 @@ class Signup extends StatelessWidget {
         'cpassword': cpassword,
       });
       unawaited(
-        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -7,7 +7,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff202020),
+      backgroundColor: const Color.fromARGB(255, 67, 62, 62),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
@@ -36,7 +36,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Stack(children: [
                     const Align(
                         alignment: Alignment.bottomRight,
-                        child: Icon(Icons.edit, color: Colors.amber))
+                        child: Icon(Icons.edit, color: Colors.white))
                   ]),
                 ),
                 const Text(
@@ -86,7 +86,7 @@ class ProfileScreen extends StatelessWidget {
 
                       //1
                       child: Card(
-                        shadowColor: Colors.redAccent,
+                        shadowColor: Colors.green,
                         elevation: 10,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(15),
                       //2
                       child: Card(
-                        shadowColor: Colors.redAccent,
+                        shadowColor: Colors.green,
                         elevation: 10,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
@@ -144,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(15),
                       //3
                       child: Card(
-                        shadowColor: Colors.redAccent,
+                        shadowColor: Colors.green,
                         elevation: 10,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
@@ -173,7 +173,7 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(15),
                       //4
                       child: Card(
-                        shadowColor: Colors.redAccent,
+                        shadowColor: Colors.green,
                         elevation: 10,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
@@ -202,7 +202,7 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(15),
                       //5
                       child: Card(
-                        shadowColor: Colors.redAccent,
+                        shadowColor: Colors.green,
                         elevation: 10,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
@@ -231,7 +231,7 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(15),
                       //6
                       child: Card(
-                        shadowColor: Colors.redAccent,
+                        shadowColor: Colors.green,
                         elevation: 10,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
