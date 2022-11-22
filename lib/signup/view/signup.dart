@@ -45,7 +45,7 @@ class Signup extends StatelessWidget {
                   if (value!.isEmpty ||
                       !RegExp(r'^[A-Za-z][A-Za-z0-9_]{7,29}$')
                           .hasMatch(value) ||
-                      value.length <= 4) {
+                      value.length <= 3) {
                     return 'Please enter your name';
                   }
                   return null;

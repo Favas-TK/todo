@@ -37,9 +37,9 @@ class _LoginState extends State<Login> {
                 //   alignment: Alignment.center,
                 //   padding: const EdgeInsets.all(10),
                 //     child:const NetworkImage(
-                      
+
                 //            'https://cdni.iconscout.com/illustration/premium/thumb/job-starting-date-2537382-2146478.png',
-                
+
                 //    ),
                 // ),
                 Container(
@@ -56,26 +56,29 @@ class _LoginState extends State<Login> {
                     controller: mailController,
                     decoration: const InputDecoration(
                       enabledBorder: InputBorder.none,
-                        border:InputBorder.none,
-                        prefixIcon: Icon(Icons.email_outlined),
-                        hintText: 'Email',
-                        hintStyle: TextStyle(
-                         // color:  selected == Gender.Email ? enabledtxt : deaible,
-                        ),
-                      ),
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(32),
-                //       ),
-                //       labelText: 'Mail_ID',
-                //     ),
-                   ),
-                 ),
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.email_outlined),
+                      // suffixIcon: Icon(Icons.remove_red_eye_rounded),
+                      hintText: 'Email',
+                      hintStyle: TextStyle(
+                          // color:  selected == Gender.Email ? enabledtxt : deaible,
+                          ),
+                    ),
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(32),
+                    //       ),
+                    //       labelText: 'Mail_ID',
+                    //     ),
+                  ),
+                ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextField(
                     obscureText: true,
                     controller: passwordController,
                     decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: const Icon(Icons.remove_red_eye_rounded),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(32),
                       ),
@@ -102,7 +105,8 @@ class _LoginState extends State<Login> {
                 ),
                 MaterialButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   textColor: Colors.white,
                   color: Colors.blue,
                   child: const Text('Login'),
@@ -117,10 +121,10 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
+                              builder: (context) =>  HomeScreen()));
                     } on FirebaseAuthException catch (e) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text('invalid email or password')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('invalid email or password')));
                       // print(e.code);
                       // print('login failed');
                     }
@@ -182,7 +186,7 @@ class _LoginState extends State<Login> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>  Signup(),
+                                builder: (context) => Signup(),
                               ),
                             );
                           },
