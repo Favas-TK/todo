@@ -42,10 +42,7 @@ class Signup extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: TextFormField(
                 validator: (value) {
-                  if (value!.isEmpty ||
-                      !RegExp(r'^[A-Za-z][A-Za-z0-9_]{7,29}$')
-                          .hasMatch(value) ||
-                      value.length <= 3) {
+                  if (value!.isEmpty || value.length < 3) {
                     return 'Please enter your name';
                   }
                   return null;
@@ -109,7 +106,7 @@ class Signup extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: TextFormField(
                 validator: (value) {
-                  if (passwordController != cPasswordController) {
+                  if (passwordController.text != cPasswordController.text) {
                     return 'password must be same';
                   }
                   return null;
@@ -126,6 +123,9 @@ class Signup extends StatelessWidget {
               color: Colors.blue,
               child: const Text('Register'),
               onPressed: () {
+                print(passwordController.text);
+                print(cPasswordController.text);
+                print(nameController.text);
                 if (_formKey.currentState!.validate()) {
                   createuser(
                     mailController.text,

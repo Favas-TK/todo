@@ -20,7 +20,7 @@ class ModalTextField extends StatelessWidget {
   bool buttonType;
   String? name, description;
   String? todoid;
-  final todoRef = FirebaseFirestore.instance.collection('todo data');
+  final todoRef = FirebaseFirestore.instance.collection('todo_data');
 
   // final _formKey = GlobalKey<FormState>();
 

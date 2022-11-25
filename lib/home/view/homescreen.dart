@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfileScreen(),
+                  builder: (context) =>  ProfileScreen(),
                 ),
               );
             },
@@ -35,9 +35,9 @@ class HomeScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data!.docs);
+           // print(snapshot.data!.docs);
             final todoitems = snapshot.data!.docs;
-            print(todoitems[1]['todoName']);
+            //print(todoitems[1]['todoName']);
             return ListView.builder(
               itemCount: todoitems.length,
               itemBuilder: (BuildContext context, int index) {
@@ -58,14 +58,16 @@ class HomeScreen extends StatelessWidget {
                               name: todoitems[index]['todoName'].toString(),
                               description:
                                   todoitems[index]['description'].toString(),
-                                  todoid: todoitems[index]['todoid'].toString(),
+                              todoid: todoitems[index]['todoid'].toString(),
                             ),
                           );
                         },
                         icon: Icon(Icons.edit),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          deleteTodo(todoitems[index]['todoid'].toString());
+                        },
                         icon: Icon(Icons.delete),
                       ),
                     ],
@@ -94,5 +96,12 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> deleteTodo( String id ) async {
+    final todoref = FirebaseFirestore.instance.collection('todo data');
+    try {
+      await todoRef.doc(id).delete();
+    } catch (e) {}
   }
 }
