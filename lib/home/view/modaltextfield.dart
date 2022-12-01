@@ -5,13 +5,12 @@ import 'package:motion_toast/motion_toast.dart';
 import 'package:uuid/uuid.dart';
 
 class ModalTextField extends StatelessWidget {
-  ModalTextField({
-    super.key,
-    required this.buttonType,
-    this.name,
-    this.description ,
-    this.todoid
-  });
+  ModalTextField(
+      {super.key,
+      required this.buttonType,
+      this.name,
+      this.description,
+      this.todoid,});
   late TextEditingController todoNameController =
       TextEditingController(text: name);
   late TextEditingController todoDescriptionController =
@@ -31,13 +30,13 @@ class ModalTextField extends StatelessWidget {
         padding: MediaQuery.of(context).viewInsets,
         child: Container(
           height: MediaQuery.of(context).size.height / 3,
-          margin: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(20),
           color: Colors.white,
           child: Column(
             children: [
               Text(
                 (buttonType) ? 'Add todo' : 'Edit todo',
-                style: TextStyle(fontSize: 22, color: Colors.black),
+                style: const TextStyle(fontSize: 22, color: Colors.black),
               ),
               const Padding(
                 padding: EdgeInsets.all(10),
@@ -87,9 +86,10 @@ class ModalTextField extends StatelessWidget {
                     ).show(context);
                   } else {
                     updateTodo(
-                        todoName: todoNameController.text,
-                        description: todoDescriptionController.text,);
-                         Navigator.pop(context);
+                      todoName: todoNameController.text,
+                      description: todoDescriptionController.text,
+                    );
+                    Navigator.pop(context);
                   }
                 },
               )
@@ -108,7 +108,7 @@ class ModalTextField extends StatelessWidget {
     final userid = auth.currentUser!.uid;
     const uuid = Uuid();
     final todoId = uuid.v4();
-    // final date = DateFormat.yMd().add_jm();
+
     final datetime = DateTime.now();
     final time = '${datetime.hour}:${datetime.minute}pm';
     try {

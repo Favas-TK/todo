@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/forgot/forgot.dart';
 import 'package:todo/home/homescreen.dart';
+import 'package:todo/login/bloc/authentication_bloc.dart';
 import 'package:todo/signup/signup.dart';
 
 class Login extends StatefulWidget {
@@ -14,191 +16,201 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  final _authBloc = AuthenticationBloc();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.all(10),
-            child: ListView(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Welcome',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30,
+    return BlocProvider(
+        create: (context) => _authBloc,
+        child: BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+            if (state is LoginSuccess) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(),
+                ),
+              );
+            } else if (state is LoginFailed) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                ),
+              );
+            }
+          },
+          child: Scaffold(
+            body: Padding(
+                padding: const EdgeInsets.all(10),
+                child: ListView(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Welcome',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                //  Container(
-                //   alignment: Alignment.center,
-                //   padding: const EdgeInsets.all(10),
-                //     child:const NetworkImage(
+                    //  Container(
+                    //   alignment: Alignment.center,
+                    //   padding: const EdgeInsets.all(10),
+                    //     child:const NetworkImage(
 
-                //            'https://cdni.iconscout.com/illustration/premium/thumb/job-starting-date-2537382-2146478.png',
+                    //            'https://cdni.iconscout.com/illustration/premium/thumb/job-starting-date-2537382-2146478.png',
 
-                //    ),
-                // ),
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  child: TextField(
-                    controller: mailController,
-                    decoration: const InputDecoration(
-                      enabledBorder: InputBorder.none,
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.email_outlined),
-                      // suffixIcon: Icon(Icons.remove_red_eye_rounded),
-                      hintText: 'Email',
-                      hintStyle: TextStyle(
-                          // color:  selected == Gender.Email ? enabledtxt : deaible,
+                    //    ),
+                    // ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: TextField(
+                        controller: mailController,
+                        decoration: const InputDecoration(
+                          enabledBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.email_outlined),
+                          // suffixIcon: Icon(Icons.remove_red_eye_rounded),
+                          hintText: 'Email',
+                          hintStyle: TextStyle(
+                              // color:  selected == Gender.Email ? enabledtxt : deaible,
+                              ),
+                        ),
+                        //       border: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.circular(32),
+                        //       ),
+                        //       labelText: 'Mail_ID',
+                        //     ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: TextField(
+                        obscureText: true,
+                        controller: passwordController,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: const Icon(Icons.remove_red_eye_rounded),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32),
                           ),
-                    ),
-                    //       border: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(32),
-                    //       ),
-                    //       labelText: 'Mail_ID',
-                    //     ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: const Icon(Icons.remove_red_eye_rounded),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32),
+                          labelText: 'Password',
+                        ),
                       ),
-                      labelText: 'Password',
                     ),
-                  ),
-                ),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const []),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 15),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Forget(),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const []),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 15),
                       ),
-                    );
-                  },
-                  child: const Text('Forgot Password'),
-                ),
-                MaterialButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.blue,
-                  child: const Text('Login'),
-                  onPressed: () async {
-                    final auth = FirebaseAuth.instance;
-                    try {
-                      await auth.signInWithEmailAndPassword(
-                        email: mailController.text,
-                        password: passwordController.text,
-                      );
-
-                      Navigator.push(
+                      onPressed: () {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>  HomeScreen()));
-                    } on FirebaseAuthException catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('invalid email or password')));
-                      // print(e.code);
-                      // print('login failed');
-                    }
-                  },
-                ),
-                const SizedBox(height: 50),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 10, right: 20),
-                        child: const Divider(
-                          color: Colors.black,
+                            builder: (context) => const Forget(),
+                          ),
+                        );
+                      },
+                      child: const Text('Forgot Password'),
+                    ),
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      child: const Text('Login'),
+                      onPressed: () => _authBloc.add(
+                        LoginEvent(
+                          email: mailController.text,
+                          password: passwordController.text,
                         ),
                       ),
                     ),
-                    const Text('OR'),
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 20, right: 10),
-                        child: const Divider(
-                          color: Colors.black,
+                    const SizedBox(height: 50),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10, right: 20),
+                            child: const Divider(
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
-                      ),
+                        const Text('OR'),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 20, right: 10),
+                            child: const Divider(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FloatingActionButton(
-                      onPressed: () {},
-                      child: const Icon(Icons.whatsapp),
-                    ),
-                    const SizedBox(width: 15),
-                    FloatingActionButton(
-                      onPressed: () {},
-                      child: const Icon(Icons.facebook),
-                    )
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(15),
-                ),
-                const SizedBox(
-                  height: 150,
-                ),
-                Column(
-                  children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Dont have an account'),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            textStyle: const TextStyle(fontSize: 15),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Signup(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'Register',
-                          ),
+                        FloatingActionButton(
+                          onPressed: () {},
+                          child: const Icon(Icons.whatsapp),
+                        ),
+                        const SizedBox(width: 15),
+                        FloatingActionButton(
+                          onPressed: () {},
+                          child: const Icon(Icons.facebook),
                         )
                       ],
                     ),
+                    const Padding(
+                      padding: EdgeInsets.all(15),
+                    ),
+                    const SizedBox(
+                      height: 150,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Dont have an account'),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle: const TextStyle(fontSize: 15),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Signup(),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Register',
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
-                ),
-              ],
-            )));
+                )),
+          ),
+        ));
   }
 }
